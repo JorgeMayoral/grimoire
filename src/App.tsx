@@ -3,10 +3,17 @@ import { useEffect, useRef, useState } from 'react';
 import { editor as monacoEditor } from 'monaco-editor';
 import { open, save } from '@tauri-apps/api/dialog';
 import { invoke } from '@tauri-apps/api';
+import Markdown from 'react-markdown';
+
+enum EditorMode {
+	Edit,
+	Preview,
+}
 
 function App() {
 	const [content, setContent] = useState<string>('');
 	const [filename, setFilename] = useState<string>('');
+	const [editorMode, setEditorMode] = useState<EditorMode>(EditorMode.Edit);
 	const editorRef = useRef<monacoEditor.IStandaloneCodeEditor>();
 
 	useEffect(() => {
@@ -90,18 +97,31 @@ function App() {
 		}
 	};
 
+	const handleChangeMode = () => {
+		setEditorMode((prev) =>
+			prev === EditorMode.Edit ? EditorMode.Preview : EditorMode.Edit,
+		);
+	};
+
 	return (
 		<>
 			<button onClick={handleNew}>New</button>
 			<button onClick={handleOpen}>Open</button>
 			<button onClick={handleSave}>Save</button>
-			<Editor
-				height="90vh"
-				defaultLanguage="markdown"
-				onMount={handleEditorMount}
-				value={content}
-				onChange={handleChange}
-			/>
+			<button onClick={handleChangeMode}>
+				{editorMode === EditorMode.Edit ? 'Preview' : 'Edit'}
+			</button>
+			{editorMode === EditorMode.Preview ? (
+				<Markdown>{content}</Markdown>
+			) : (
+				<Editor
+					height="90vh"
+					defaultLanguage="markdown"
+					onMount={handleEditorMount}
+					value={content}
+					onChange={handleChange}
+				/>
+			)}
 		</>
 	);
 }
