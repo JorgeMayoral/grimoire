@@ -3,24 +3,18 @@
     windows_subsystem = "windows"
 )]
 
-use grimoire::{
-    menu::{build_menu, handle_menu_event},
-    state::EditorContent,
+use commands::{
+    open_file::{open_md, open_ybf},
+    save_file::{save_md, save_ybf},
 };
 
-#[tauri::command]
-fn sync_editor_content(state: tauri::State<EditorContent>, content: String) {
-    *state.content.lock().unwrap() = content;
-}
+mod commands;
 
 fn main() {
     tauri::Builder::default()
-        .manage(EditorContent {
-            content: Default::default(),
-        })
-        .menu(build_menu())
-        .on_menu_event(handle_menu_event)
-        .invoke_handler(tauri::generate_handler![sync_editor_content])
+        .invoke_handler(tauri::generate_handler![
+            open_md, save_md, open_ybf, save_ybf
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
