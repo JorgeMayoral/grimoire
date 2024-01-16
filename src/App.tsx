@@ -5,16 +5,12 @@ import Markdown from 'react-markdown';
 import { Editor } from './components/Editor';
 import { FILE_FORMATS } from './utils/constants';
 import { useContentStore } from './hooks/useContentStore';
-
-enum EditorMode {
-	Edit,
-	Preview,
-}
+import { EditorMode, useAppStore } from './hooks/useAppStore';
 
 function App() {
 	const [filename, setFilename] = useState<string>('');
-	const [editorMode, setEditorMode] = useState<EditorMode>(EditorMode.Edit);
 
+	const { editorMode, switchEditorMode } = useAppStore((state) => state);
 	const { content, setContent } = useContentStore((state) => state);
 
 	useEffect(() => {
@@ -67,18 +63,12 @@ function App() {
 		}
 	};
 
-	const handleChangeMode = () => {
-		setEditorMode((prev) =>
-			prev === EditorMode.Edit ? EditorMode.Preview : EditorMode.Edit,
-		);
-	};
-
 	return (
 		<>
 			<button onClick={handleNew}>New</button>
 			<button onClick={handleOpen}>Open</button>
 			<button onClick={handleSave}>Save</button>
-			<button onClick={handleChangeMode}>
+			<button onClick={switchEditorMode}>
 				{editorMode === EditorMode.Edit ? 'Preview' : 'Edit'}
 			</button>
 			{editorMode === EditorMode.Preview ? (
