@@ -1,9 +1,10 @@
-import Editor, { Monaco } from '@monaco-editor/react';
-import { useEffect, useRef, useState } from 'react';
-import { editor as monacoEditor } from 'monaco-editor';
+import { useEffect, useState } from 'react';
 import { open, save } from '@tauri-apps/api/dialog';
 import { invoke } from '@tauri-apps/api';
 import Markdown from 'react-markdown';
+import { Editor } from './components/Editor';
+import { FILE_FORMATS } from './utils/constants';
+import { useContentStore } from './hooks/useContentStore';
 
 enum EditorMode {
 	Edit,
@@ -11,10 +12,10 @@ enum EditorMode {
 }
 
 function App() {
-	const [content, setContent] = useState<string>('');
 	const [filename, setFilename] = useState<string>('');
 	const [editorMode, setEditorMode] = useState<EditorMode>(EditorMode.Edit);
-	const editorRef = useRef<monacoEditor.IStandaloneCodeEditor>();
+
+	const { content, setContent } = useContentStore((state) => state);
 
 	useEffect(() => {
 		if (filename === '') return;
@@ -29,19 +30,6 @@ function App() {
 		}
 	}, [filename]);
 
-	const handleEditorMount = (
-		editor: monacoEditor.IStandaloneCodeEditor,
-		_: Monaco,
-	) => {
-		editorRef.current = editor;
-	};
-
-	const handleChange = (value: string | undefined) => {
-		if (value !== undefined) {
-			setContent(value);
-		}
-	};
-
 	const handleNew = () => {
 		setContent('');
 		setFilename('');
@@ -50,16 +38,7 @@ function App() {
 	const handleOpen = async () => {
 		const selected = await open({
 			multiple: false,
-			filters: [
-				{
-					name: 'Markdown',
-					extensions: ['md'],
-				},
-				{
-					name: "Yorch's binary file",
-					extensions: ['ybf'],
-				},
-			],
+			filters: FILE_FORMATS,
 		});
 		const selectedFile = Array.isArray(selected) ? selected[0] : selected;
 		setFilename(selectedFile ?? '');
@@ -68,16 +47,7 @@ function App() {
 	const handleSave = async () => {
 		const selected = await save({
 			defaultPath: filename,
-			filters: [
-				{
-					name: 'Markdown',
-					extensions: ['md'],
-				},
-				{
-					name: "Yorch's binary file",
-					extensions: ['ybf'],
-				},
-			],
+			filters: FILE_FORMATS,
 		});
 		const selectedFile = Array.isArray(selected) ? selected[0] : selected;
 		if (selectedFile === undefined) return;
@@ -114,13 +84,7 @@ function App() {
 			{editorMode === EditorMode.Preview ? (
 				<Markdown>{content}</Markdown>
 			) : (
-				<Editor
-					height="90vh"
-					defaultLanguage="markdown"
-					onMount={handleEditorMount}
-					value={content}
-					onChange={handleChange}
-				/>
+				<Editor />
 			)}
 		</>
 	);
