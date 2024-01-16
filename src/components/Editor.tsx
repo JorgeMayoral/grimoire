@@ -17,7 +17,7 @@ export const Editor = () => {
 
 	return (
 		<MonacoEditor
-			height="90vh"
+			className="w-full pt-4"
 			defaultLanguage="markdown"
 			onMount={handleEditorMount}
 			value={content}

@@ -9,6 +9,9 @@ interface AppStore {
 	editorMode: EditorMode;
 	setEditorMode: (mode: EditorMode) => void;
 	switchEditorMode: () => void;
+
+	currentFile: string;
+	setCurrentFile: (file: string) => void;
 }
 
 export const useAppStore = create<AppStore>()((set) => ({
@@ -21,4 +24,6 @@ export const useAppStore = create<AppStore>()((set) => ({
 					? EditorMode.Preview
 					: EditorMode.Edit,
 		})),
+	currentFile: '',
+	setCurrentFile: (file) => set({ currentFile: file }),
 }));
