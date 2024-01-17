@@ -3,6 +3,11 @@ import { open, save } from '@tauri-apps/api/dialog';
 import { EditorMode, useAppStore } from '../hooks/useAppStore';
 import { useContentStore } from '../hooks/useContentStore';
 import { FILE_FORMATS } from '../utils/constants';
+import { FileIcon } from './icons/File';
+import { FolderOpenIcon } from './icons/FolderOpen';
+import { FloppyIcon } from './icons/Floppy';
+import { EyeIcon } from './icons/Eye';
+import { EditIcon } from './icons/Edit';
 
 export const MenuBar = () => {
 	const { editorMode, switchEditorMode, currentFile, setCurrentFile } =
@@ -49,25 +54,52 @@ export const MenuBar = () => {
 	return (
 		<div className="flex justify-between py-2 px-4 mb-2 border-b border-black">
 			<div className="flex gap-4">
-				<MenuButton onClick={handleNew}>New</MenuButton>
-				<MenuButton onClick={handleOpen}>Open</MenuButton>
-				<MenuButton onClick={handleSave}>Save</MenuButton>
+				<MenuButton onClick={handleNew}>
+					<div className="flex gap-2 items-center">
+						<FileIcon size={16} />
+						<span>New</span>
+					</div>
+				</MenuButton>
+				<MenuButton onClick={handleOpen}>
+					<div className="flex gap-2 items-center">
+						<FolderOpenIcon size={16} />
+						<span>Open</span>
+					</div>
+				</MenuButton>
+				<MenuButton onClick={handleSave}>
+					<div className="flex gap-2 items-center">
+						<FloppyIcon size={16} />
+						<span>Save</span>
+					</div>
+				</MenuButton>
 			</div>
-			<MenuButton onClick={switchEditorMode}>
-				{editorMode === EditorMode.Edit ? 'Preview' : 'Edit'}
+			<MenuButton onClick={switchEditorMode} className="min-w-[104px]">
+				{editorMode === EditorMode.Edit ? (
+					<div className="flex gap-2 items-center">
+						<EyeIcon size={16} />
+						<span>Preview</span>
+					</div>
+				) : (
+					<div className="flex justify-between items-center">
+						<EditIcon size={16} />
+						<span>Edit</span>
+					</div>
+				)}
 			</MenuButton>
 		</div>
 	);
 };
 
 type Props = {
+	className?: string;
 	children: JSX.Element | string;
 	onClick: () => void;
 };
 
-const MenuButton = ({ children, onClick }: Props) => {
+const MenuButton = ({ className, children, onClick }: Props) => {
+	const classes = `border px-2 py-1 border-black ${className}`;
 	return (
-		<button className="border px-2 py-1 border-black " onClick={onClick}>
+		<button className={classes} onClick={onClick}>
 			{children}
 		</button>
 	);
