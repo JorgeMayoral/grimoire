@@ -52,7 +52,7 @@ export const MenuBar = () => {
 	};
 
 	return (
-		<div className="flex justify-between py-2 px-4 mb-2 border-b border-black">
+		<div className="flex justify-between py-2 px-4 mb-2 border-b border-black bg-white sticky top-0">
 			<div className="flex gap-4">
 				<MenuButton onClick={handleNew}>
 					<div className="flex gap-2 items-center">
