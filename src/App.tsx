@@ -25,10 +25,10 @@ function App() {
 	}, [currentFile]);
 
 	return (
-		<>
+		<div className="h-screen w-screen">
 			<MenuBar />
 			{editorMode === EditorMode.Preview ? <Preview /> : <Editor />}
-		</>
+		</div>
 	);
 }
 
