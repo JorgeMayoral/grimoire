@@ -16,9 +16,11 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-markdown": "^9.0.1",
+    "remark-gfm": "^4.0.0",
     "zustand": "^4.4.7"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.10",
     "@tauri-apps/cli": "^1.5.9",
     "@types/node": "^18.19.4",
     "@types/react": "^18.2.46",

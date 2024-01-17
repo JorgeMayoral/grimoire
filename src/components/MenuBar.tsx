@@ -61,7 +61,7 @@ export const MenuBar = () => {
 };
 
 type Props = {
-	children: string;
+	children: JSX.Element | string;
 	onClick: () => void;
 };
 

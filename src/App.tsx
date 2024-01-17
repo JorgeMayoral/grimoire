@@ -5,10 +5,11 @@ import { Editor } from './components/Editor';
 import { useContentStore } from './hooks/useContentStore';
 import { EditorMode, useAppStore } from './hooks/useAppStore';
 import { MenuBar } from './components/MenuBar';
+import { Preview } from './components/Preview';
 
 function App() {
 	const { editorMode, currentFile } = useAppStore((state) => state);
-	const { content, setContent } = useContentStore((state) => state);
+	const { setContent } = useContentStore((state) => state);
 
 	useEffect(() => {
 		if (currentFile === '') return;
@@ -26,11 +27,7 @@ function App() {
 	return (
 		<>
 			<MenuBar />
-			{editorMode === EditorMode.Preview ? (
-				<Markdown>{content}</Markdown>
-			) : (
-				<Editor />
-			)}
+			{editorMode === EditorMode.Preview ? <Preview /> : <Editor />}
 		</>
 	);
 }
