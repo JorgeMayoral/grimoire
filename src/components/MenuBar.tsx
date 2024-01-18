@@ -2,7 +2,7 @@ import { invoke } from '@tauri-apps/api';
 import { open, save } from '@tauri-apps/api/dialog';
 import { EditorMode, useAppStore } from '../hooks/useAppStore';
 import { useContentStore } from '../hooks/useContentStore';
-import { FILE_FORMATS } from '../utils/constants';
+import { FILE_FORMATS, SAVE_PASSWORD_PROMPT_MSG } from '../utils/constants';
 import { FileIcon } from './icons/File';
 import { FolderOpenIcon } from './icons/FolderOpen';
 import { FloppyIcon } from './icons/Floppy';
@@ -45,8 +45,7 @@ export const MenuBar = () => {
 			invoke('save_ybf', {
 				filename: selectedFile,
 				content,
-				// TODO: ask for password
-				password: '1234',
+				password: window.prompt(SAVE_PASSWORD_PROMPT_MSG) ?? '',
 			}).then(() => {
 				console.log('saved');
 			});

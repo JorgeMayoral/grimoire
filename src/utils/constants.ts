@@ -12,3 +12,9 @@ export const FILE_FORMATS = [
 		extensions: ['*'],
 	},
 ];
+
+export const OPEN_PASSWORD_PROMPT_MSG =
+	'Enter password to open file. Leave blank if the file is not encrypted.';
+
+export const SAVE_PASSWORD_PROMPT_MSG =
+	'Enter password to encrypt file. Leave blank if the file should not be encrypted.';
