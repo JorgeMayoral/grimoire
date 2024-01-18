@@ -10,8 +10,13 @@ import { EyeIcon } from './icons/Eye';
 import { EditIcon } from './icons/Edit';
 
 export const MenuBar = () => {
-	const { editorMode, switchEditorMode, currentFile, setCurrentFile } =
-		useAppStore((state) => state);
+	const {
+		editorMode,
+		switchEditorMode,
+		currentFile,
+		setCurrentFile,
+		setEditorMode,
+	} = useAppStore((state) => state);
 	const { content, setContent } = useContentStore((state) => state);
 
 	const handleNew = () => {
@@ -26,6 +31,7 @@ export const MenuBar = () => {
 		});
 		const selectedFile = Array.isArray(selected) ? selected[0] : selected;
 		setCurrentFile(selectedFile ?? '');
+		setEditorMode(EditorMode.Preview);
 	};
 
 	const handleSave = async () => {
@@ -82,7 +88,7 @@ export const MenuBar = () => {
 				) : (
 					<div className="flex justify-between items-center">
 						<EditIcon size={16} />
-						<span>Edit</span>
+						<span className="w-full">Edit</span>
 					</div>
 				)}
 			</MenuButton>
@@ -97,7 +103,7 @@ type Props = {
 };
 
 const MenuButton = ({ className, children, onClick }: Props) => {
-	const classes = `border px-2 py-1 border-black ${className}`;
+	const classes = `text-center border px-2 py-1 border-black ${className}`;
 	return (
 		<button className={classes} onClick={onClick}>
 			{children}
